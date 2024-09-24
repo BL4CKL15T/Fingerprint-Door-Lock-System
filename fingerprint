@@ -1,0 +1,165 @@
+#include <LiquidCrystal.h>
+// initialize the library with the numbers of the interface pins
+LiquidCrystal lcd(12, 11, 7, 6, 5, 4);
+#include <Adafruit_Fingerprint.h>
+#include <SoftwareSerial.h>
+int getFingerprintIDez();
+SoftwareSerial mySerial(2, 3);// tx, rx
+Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
+void doorOpen()
+{
+lcd.clear();
+lcd.print("WELOME");
+if(finger.fingerID==0)
+{
+Serial.println("Welcome BEP");//i enroled ID no 1 as Nidhi'sfingerprint, so used this line
+to display corresponding name
+lcd.setCursor(0, 1);
+lcd.print("BEP");
+digitalWrite(8,HIGH);
+delay(3000);
+lcd.clear();
+}
+if(finger.finge
+rID==1)
+{
+Serial.println("Welcome DLT"); // i enroled ID no 1 as Cinla's fingerprint, so used this
+line to display corresponding name
+lcd.setCursor(0, 1);
+lcd.print("DLT");
+digitalWrite(8,HIGH);
+delay(3000); lcd.clear();
+// more number of user can be add hear
+}
+}
+void()
+digitalWrite(8,LOW)
+;
+lcd.print("No valid
+finger");
+lcd.setCursor(0, 1);
+lcd.print("on the
+sensor");
+}
+pinMode(9,OUTP
+UT);
+pinMode(10,OUTP
+UT);
+digitalWrite(9,HIG
+H);
+digitalWrite(10,LO
+W); lcd.begin(16,
+2);
+Serial.begin(38400);
+Serial.println("fingertest");
+finger.begin(57600);
+pinMode(8,OUTPUT);
+//Pin connectet to relay
+if (finger.verifyPassword()
+{
+Serial.println("Found fingerprint sensor!");
+} else
+{
+Serial.println("Did not find fingerprint sensor
+:(");
+lcd.print("Sensor not Found");
+while (1);
+}
+Serial.println("No valid finger found,waiting for valid
+finger...");
+lcd.print("No valid finger");
+lcd.setCursor(0, 1);
+lcd.print("on the sensor");
+}
+void loop() // run over and over again
+{
+if(getFingerprintIDez()>=0));
+doorClose();
+}
+uint8_tgetFingerprintID()
+{
+uint8_t p = finger.getImage();
+switch (p)
+{
+case FINGERPRINT_NOFINGER:
+Serial.println("Nofingerdetected");
+return p;
+case FINGERPRINT_PACKETRECIEVEERR:
+Serial.println("Communication error");
+return p;
+case FINGERPRINT_IMAGEFAIL:
+Serial.println("Imaging error");
+return p;
+default;
+Serial.println("Unknow
+n error");
+return p;
+}
+// OK success!
+P=finger.image2z();
+switch(p)
+{
+Case
+FINGERPRINT_OK
+Serial.println("Ima
+geconverted");
+break;
+case FINGERPRINT_IMAGEMESS:
+Serial.println("Image too messy");
+return p;
+case FINGERPRINT_PACKETRECIEVEERR:
+Serial.println("Communication error");
+return p;
+case FINGERPRINT_FEATUREFAIL:
+Serial.println("Could not find fingerprint features");
+return p;
+case FINGERPRINT_INVALIDIMAGE:
+Serial.println("Couldnotfindfingerprint features”);
+return p;
+default:
+Serial.println("Unknown error");
+return p;
+}
+// OK converted!
+p = finger.fingerFastSearch();
+if (p == FINGERPRINT_OK)
+{
+Serial.println("Found a print match!");
+}
+else if (p == FINGERPRINT_PACKETRECIEVEERR)
+{
+Serial.println("Communication error");
+return p;
+}
+else if (p == FINGERPRINT_NOTFOUND)
+{
+Serial.println("Did not find a match");
+return p;
+}
+else
+{
+Serial.println("Unknown error");
+return p;
+}
+// found a match!
+Serial.print("Found ID #");
+Serial.print(finger.fingerID);
+Serial.print(" with confidence of "); Serial.println(finger.confidence);
+}
+// returns -1 if failed, otherwise
+returns ID # int getFingerprintIDez()
+{
+int p = finger.getImage();
+if (p != FINGERPRINT_OK) return
+-1;
+p = finger.image2Tz();
+if (p != FINGERPRINT_OK)
+return -1;
+p =finger.fingerFastSearch();
+if (p != FINGERPRINT_OK)
+return -1;
+// found a match!
+Serial.print("Found ID #");
+Serial.print(finger.fingerID);
+Serial.print(" with confidence of "); Serial.println(finger.confidence);
+return finger.fingerID}
