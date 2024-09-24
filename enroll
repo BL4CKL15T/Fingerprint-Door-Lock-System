@@ -1,0 +1,76 @@
+#include<Adafruit_Fingerprint>
+#include <SoftwareSerial.h>
+int getFingerprintEnroll(intid);
+// pin #2 is IN from sensor (GREEN
+wire)
+// pin #3 is OUT from arduino (WHITE wire)
+SoftwareSerial mySerial (2, 3);
+Adafruit_Fingerprint_finger=Adafruit_Fingerprint(&mySerial);
+void setup()
+{
+Serial.begin(38400);
+Serial.println("fingertest");
+// set the data rate for the sensor
+serial port finger.begin(57600); if
+(finger.verifyPassword())
+{
+Serial.println("Found fingerprint sensor!");
+}
+else
+{
+Serial.println("Did not find fingerprint sensor”);
+while (1);
+}
+}
+void loop() // run over and over again
+{
+Serial.println("Type in the ID # you want to save this finger
+as...");
+int id = 0;
+while (true)
+while (! Serial.available);
+char c=Serial.read();
+if (! isdigit(c);
+break;
+id *= 10;
+id += c - '0';
+}
+Serial.print("Enrolling ID #");
+Serial.println(id);
+While
+getFingerprintEnroll(id);
+}
+uint8_t getFingerprintEnroll(int id)
+{
+int p = -1;
+Serial.println("Waiting for valid finger to enroll");
+while (p != FINGERPRINT_OK)
+{
+P=finger.getImage();
+switch (p)
+{
+caseFINGERPRI
+NT_OK:
+Serial.println("Image taken");
+break;
+case FINGERPRINT_NOFINGER:
+Serial.println();
+break;
+case FINGERPRINT_PACKETRECIEVEERR:
+Serial.println("Communicationerror");
+break;
+case FINGERPRINT_IMAGEFAIL:
+Serial.println("Imaging
+error");
+break;
+default:
+Serial.println("Unknown
+error");
+break;
+}
+}
+// OK success!
+p=finger.image2Tz(1);
+switch (p) {
+case FINGERPRINT_OK:
+}
